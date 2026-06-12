@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para meu amor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-amor">
+
+  <div class="envelope">
+
+    <div class="ornamento">
+      <span class="linha-ouro"></span>
+      <span class="coracao">♡</span>
+      <span class="linha-ouro"></span>
+    </div>
+
+    <p class="parabens">Você acertou tudo ✦</p>
+
+    <h1 class="titulo">
+      Sabia que ia <em>acertar.</em><br>
+      
+    </h1>
+
+    <!-- ── Carrossel de fotos ── -->
+    <div class="carrossel">
+      <button class="carrossel-btn carrossel-prev" onclick="moverCarrossel(-1)">&#8592;</button>
+      <div class="carrossel-trilho">
+        <div class="carrossel-slides" id="carrossel-slides">
+          <div class="slide"><img src="foto1.jpg" alt="Nossa foto 1"></div>
+          <div class="slide"><img src="foto2.jpg" alt="Nossa foto 2"></div>
+          <div class="slide"><img src="foto3.jpg" alt="Nossa foto 3"></div>
+          <div class="slide"><img src="foto4.webp" alt="Nossa foto 4"></div>
+          <div class="slide"><img src="foto5.jpg" alt="Nossa foto 5"></div>
+          <div class="slide"><img src="foto6.jpg" alt="Nossa foto 6"></div>
+          <div class="slide"><img src="foto7.jpg" alt="Nossa foto 7"></div>
+          <div class="slide"><img src="foto8.jpg" alt="Nossa foto 8"></div>
+        </div>
+      </div>
+      <button class="carrossel-btn carrossel-next" onclick="moverCarrossel(1)">&#8594;</button>
+      <div class="carrossel-dots" id="carrossel-dots"></div>
+    </div>
+
+    <script>
+      let slideAtual = 0;
+      const totalSlides = 8;
+
+      // Gera os pontos
+      const dotsContainer = document.getElementById('carrossel-dots');
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'dot' + (i === 0 ? ' dot-ativo' : '');
+        dot.onclick = () => irParaSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+
+      function irParaSlide(n) {
+        slideAtual = (n + totalSlides) % totalSlides;
+        document.getElementById('carrossel-slides').style.transform =
+          `translateX(-${slideAtual * 100}%)`;
+        document.querySelectorAll('.dot').forEach((d, i) => {
+          d.className = 'dot' + (i === slideAtual ? ' dot-ativo' : '');
+        });
+      }
+
+      function moverCarrossel(direcao) {
+        irParaSlide(slideAtual + direcao);
+      }
+
+      // Swipe no celular
+      let touchStartX = 0;
+      const trilho = document.querySelector('.carrossel-trilho');
+      trilho.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+      trilho.addEventListener('touchend', e => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) moverCarrossel(diff > 0 ? 1 : -1);
+      });
+    </script>
+
+    <!-- =============================================
+         ✏️  EDITE AQUI A SUA MENSAGEM DE AMOR
+         ============================================= -->
+    <div class="carta">
+      <span class="saudacao">Heloisa</span>
+
+      <p>
+        Só passei aqui para dizer que <span class="destaque">Você é o amor da minha vida</span>,
+        Sei que não sou perfeiro e às vezes posso acabar te irritando; quero que saiba que não 
+        é minha intenção.
+      </p>
+
+      <p>
+        Vamos <span class="destaque">construir nosso futuro juntos</span> —
+        nossa casa, nossos filhos, nossas histórias.
+        Cada dia que passa, fico mais apaixonado,
+        mais admirado pela sua força, pela sua inteligência,
+        e seu carinho <span class="destaque">te amo muito </span>.
+      </p>
+
+      <p>
+        O que achar de comer um lanche hoje debaixo das cobertas, 
+        assintindo a uma série e tomando um vinho?
+      </p>
+
+      <span class="assinatura">Com todo o meu amor ♡ Brayan</span>
+    </div>
+    <!-- ============================================= -->
+
+    <p class="rodape">feito com amor · só para você</p>
+
+  </div>
+
+</body>
+</html>

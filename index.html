@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para meu amor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-quiz">
+
+  <!-- ── Tela 1: Boas-vindas ── -->
+  <div id="tela-boas-vindas">
+    <p class="eyebrow">Uma mensagem especial</p>
+    <h1 class="titulo-bv">
+      Se você abriu esse link,<br>
+      saiba que é a pessoa <em>mais importante</em><br>
+      da minha vida.
+    </h1>
+    <p class="subtitulo-bv">
+      Preparei uma brincadeira só para descontrair.
+    </p>
+    <button class="btn" onclick="comecarQuiz()">Quero descobrir ✦</button>
+  </div>
+
+  <!-- ── Tela 2: Quiz ── -->
+  <div id="tela-quiz">
+    <div class="progresso">
+      <div class="passo" id="p1"></div>
+      <div class="passo" id="p2"></div>
+      <div class="passo" id="p3"></div>
+    </div>
+    <div class="card-pergunta">
+      <p class="numero-pergunta" id="numero-pergunta">Pergunta 1 de 3</p>
+      <p class="texto-pergunta" id="texto-pergunta"></p>
+      <div class="opcoes" id="opcoes"></div>
+      <p class="feedback" id="feedback"></p>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // ✏️  EDITE AQUI AS SUAS PERGUNTAS E RESPOSTAS
+    // =============================================
+    const perguntas = [
+      {
+        texto: "Em que data começamos a namorar?",
+        opcoes: [
+          "12 de março",
+          "04 de março",   // ← resposta certa
+          "21 de setembro",
+          "30 de novembro"
+        ],
+        certa: 1  // índice da resposta certa (começa em 0)
+      },
+      {
+        texto: "Qual é o prato favorito do seu amor?",
+        opcoes: [
+          "Pizza",
+          "Pastel",
+          "Macarrão ao molho",
+          "Hamburguer"  // ← resposta certa
+        ],
+        certa: 3
+      },
+      {
+        texto: "O que ele faz toda vez que te vê?",
+        opcoes: [
+          "Abraça",
+          "Fica com saudade mesmo estando do lado",
+          "Sorri sem querer"  // ← resposta certa
+        ],
+        certa: 2
+      }
+    ];
+    // =============================================
+
+    let atual = 0;
+
+    function comecarQuiz() {
+      document.getElementById('tela-boas-vindas').style.display = 'none';
+      const tq = document.getElementById('tela-quiz');
+      tq.style.display = 'block';
+      mostrarPergunta();
+    }
+
+    function atualizarProgresso() {
+      for (let i = 0; i < perguntas.length; i++) {
+        const el = document.getElementById('p' + (i+1));
+        if (i < atual)       el.className = 'passo feito';
+        else if (i === atual) el.className = 'passo ativo';
+        else                  el.className = 'passo';
+      }
+    }
+
+    function mostrarPergunta() {
+      const p = perguntas[atual];
+      document.getElementById('numero-pergunta').textContent =
+        `Pergunta ${atual + 1} de ${perguntas.length}`;
+      document.getElementById('texto-pergunta').textContent = p.texto;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = 'feedback';
+
+      const container = document.getElementById('opcoes');
+      container.innerHTML = '';
+      p.opcoes.forEach((op, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'opcao';
+        btn.textContent = op;
+        btn.onclick = () => responder(i, btn);
+        container.appendChild(btn);
+      });
+
+      atualizarProgresso();
+    }
+
+    function responder(indice, btn) {
+      const p = perguntas[atual];
+      const todos = document.querySelectorAll('.opcao');
+      todos.forEach(b => b.disabled = true);
+
+      const fb = document.getElementById('feedback');
+
+      if (indice === p.certa) {
+        btn.classList.add('certa');
+        fb.textContent = '✓ Arrasou! Essa você sabia.';
+        fb.classList.add('positivo');
+        setTimeout(() => {
+          atual++;
+          if (atual < perguntas.length) {
+            mostrarPergunta();
+          } else {
+            // Todas certas → vai para a página de amor
+            window.location.href = 'amor.html';
+          }
+        }, 1200);
+      } else {
+        btn.classList.add('errada');
+        fb.textContent = 'Hmm… não era essa. Tente de novo!';
+        setTimeout(() => {
+          todos.forEach(b => { b.disabled = false; b.className = 'opcao'; });
+          fb.textContent = '';
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
